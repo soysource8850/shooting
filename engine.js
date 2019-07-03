@@ -73,3 +73,9 @@ class EventDispatcher {
     if (listeners != undefined) listeners.forEach((callback) => callback(event));
   }
 }
+
+class GameEvent {
+  constructor(target) {
+    this.target = target;
+  }
+}
