@@ -15,3 +15,10 @@ class Rectangle {
     return (horizontal && vertical);
   }
 }
+
+class Sprite {
+  constructor(image, rectangle) {
+    this.image = image;
+    this.rectangle = rectangle;
+  }
+}
