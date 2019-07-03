@@ -52,3 +52,24 @@ class AssetLoader {
     return this._assets.get(name);
   }
 }
+
+class EventDispatcher {
+  constructor() {
+    this._eventListeners = {};
+  }
+
+  addEventListener(type, callback) {
+    if (this._eventListeners[type] == undefined) {
+      this._eventListeners[type] = [];
+    }
+
+    this._eventListeners[type].push(callback);
+  }
+
+  // removeEventListener() {}
+
+  dispatchEvent(type, event) {
+    const listeners = this._eventListeners[type];
+    if (listeners != undefined) listeners.forEach((callback) => callback(event));
+  }
+}
