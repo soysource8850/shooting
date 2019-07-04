@@ -280,4 +280,13 @@ class Scene extends EventDispatcher {
   _renderAll() {
     this.actors.forEach((obj) => obj.render(this.renderingTarget));
   }
+
+  _addDestroyedActor(actor) {
+    this._destroyedActors.push(actor);
+  }
+
+  _disposeDestroyedActors() {
+    this._destroyedActors.forEach((actor) => this.remove(actor));
+    this._destroyedActors = [];
+  }
 }
