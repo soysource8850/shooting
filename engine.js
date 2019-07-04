@@ -1,7 +1,5 @@
 'use strict';
 
-const assets = new AssetLoader();
-
 class Rectangle {
   constructor(x, y, width, height) {
     this.x = x;
@@ -73,6 +71,8 @@ class EventDispatcher {
     if (listeners != undefined) listeners.forEach((callback) => callback(event));
   }
 }
+
+const assets = new AssetLoader();
 
 class GameEvent {
   constructor(target) {
