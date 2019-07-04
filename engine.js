@@ -299,3 +299,50 @@ class GameInformation {
     this.currentFps = currentFps;
   }
 }
+
+class Game {
+  constructor(title, width, height, maxFps) {
+    this.title = title;
+    this.width = width;
+    this.height = height;
+    this.maxFps = maxFps;
+    this.currentFps = 0;
+
+    this.screenCanvas = document.createElement('canvas');
+    this.screenCanvas.height = height;
+    this.screenCanvas.width = width;
+
+    console.log(`${title}が初期化されました。`)
+  }
+
+  changeScene(newScene) {
+    this.currentScene = newScene;
+    this.currentScene = addEventListener('changescene', (e) => this.changeScene(e.target));
+    console.log(`シーンが${newScene.name}に切り替わりました。`);
+  }
+
+  start() {
+    requestAnimationFrame(this._loop.bind(this));
+  }
+
+  _loop(timestamp) {
+    const elapsedSec = (timestamp - this._prevTimestamp) / 1000;
+    const accuracy = 0.9;
+    const frameTime = 1 / this.maxFps * accuracy;
+    if (elapsedSec <= frameTime) {
+      requestAnimationFrame(this._loop.bind(this));
+
+      return;
+    }
+
+    this._prevTimestamp = timestamp;
+    this.currentFps = 1 / elapsedSec;
+
+    const screenRectangle = new Rectangle(0, 0, this.width, this.height);
+    const info = new GameInformation(this.title, screenRectangle, this.maxFps, this.currentFps);
+    const input = this._inputReceiver.getInput();
+    this.currentScene.update(info, input);
+
+    requestAnimationFrame(this._loop.bind(this));
+  }
+}
