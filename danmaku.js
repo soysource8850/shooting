@@ -70,3 +70,10 @@ class DanmakuStgGame extends Game {
     this.changeScene(titleScene);
   }
 }
+
+assets.addImage('sprite', 'sprite.png');
+assets.loadAll().then((a) => {
+  const game = new DanmakuStgGame();
+  document.body.appendChild(game.screenCanvas);
+  game.start();
+});
