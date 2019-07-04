@@ -25,7 +25,7 @@ class Bullet extends SpriteActor {
 
   update(gameInfo, input) {
     this.y -= this.speed;
-    if (this.isOutOfBountds(gameInfo.screenRectangle)) {
+    if (this.isOutOfBounds(gameInfo.screenRectangle)) {
       this.destroy();
     }
   }
