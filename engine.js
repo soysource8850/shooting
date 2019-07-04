@@ -290,3 +290,12 @@ class Scene extends EventDispatcher {
     this._destroyedActors = [];
   }
 }
+
+class GameInformation {
+  constructor(title, screenRectangle, maxFps, currentFps) {
+    this.title = title;
+    this.screenRectangle = screenRectangle;
+    this.maxFps = maxFps;
+    this.currentFps = currentFps;
+  }
+}
