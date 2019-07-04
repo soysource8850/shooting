@@ -312,6 +312,9 @@ class Game {
     this.screenCanvas.height = height;
     this.screenCanvas.width = width;
 
+    this._inputReceiver = new InputReceiver();
+    this._prevTimestamp = 0;
+
     console.log(`${title}が初期化されました。`)
   }
 
