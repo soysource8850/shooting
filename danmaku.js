@@ -14,6 +14,23 @@ class Title extends Actor {
   }
 }
 
+class Bullet extends SpriteActor {
+  constructor(x, y) {
+    const sprite = new Sprite(assets.get('sprite'), new Rectangle(0, 16, 16, 16));
+    const hitArea = new Rectangle(4, 0, 8, 16);
+    super(x, y, sprite, hitArea, ['playerBullet']);
+
+    this.speed = 6;
+  }
+
+  update(gameInfo, input) {
+    this.y -= this.speed;
+    if (this.isOutOfBountds(gameInfo.screenRectangle)) {
+      this.destroy();
+    }
+  }
+}
+
 class Fighter extends SpriteActor {
   constructor(x, y) {
     const sprite = new Sprite(assets.get('sprite'), new Rectangle(0, 0, 16, 16));
