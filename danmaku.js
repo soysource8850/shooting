@@ -14,6 +14,33 @@ class Title extends Actor {
   }
 }
 
+class EnemyHpBar extends Actor {
+  constructor(x, y, enemy) {
+    const hitArea = new Rectangle(0, 0, 0, 0);
+    super(x, y, hitArea);
+
+    this._width = 200;
+    this._height = 10;
+
+    this._innerWidth = this._width;
+
+    enemy.addEventListener('changehp', (e) => {
+      const maxHp = e.target.maxHp;
+      const hp = e.target.currentHp;
+      this._innerWidth = this._Width * (hp / maxHp);
+    });
+  }
+
+  render(target) {
+    const context = target.getContext('2d');
+    context.strokeStyle = 'white';
+    context.fillStyle = 'white';
+
+    context.strokeRect(this.x, this.y, this._width, this._height);
+    context.fillRect(this.x, this.y, this._innerWidth, this._height);
+  }
+}
+
 class Bullet extends SpriteActor {
   constructor(x, y) {
     const sprite = new Sprite(assets.get('sprite'), new Rectangle(0, 16, 16, 16));
