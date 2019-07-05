@@ -208,8 +208,8 @@ class Enemy extends SpriteActor {
     this.maxHp = 50;
     this.currentHp = this.maxHp;
 
-    this._interval = 12;
-    this._timeCount = 0;
+    this._interval = 300;
+    this._timeCount = this._interval;
     this._velocityX = 0;
     this._count = 0;
 
@@ -248,8 +248,10 @@ class Enemy extends SpriteActor {
     // Shoot bullets according to interval.
     this._timeCount++;
     if (this._timeCount > this._interval) {
-      this._count += 10;
-      this.shootCircularBullets(10, 1, this._count);
+      // this._count += 10;
+      // this.shootCircularBullets(10, 1, this._count);
+      const spawner = new SpiralBulletsSpawner(this.x, this.y, 4);
+      this.spawnActor(spawner)
       this._timeCount = 0;
     }
 
