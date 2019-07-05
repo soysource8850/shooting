@@ -156,9 +156,10 @@ class Enemy extends SpriteActor {
     this.maxHp = 50;
     this.currentHp = this.maxHp;
 
-    this._interval = 120;
+    this._interval = 12;
     this._timeCount = 0;
-    this._velocityX = 0.3;
+    this._velocityX = 0;
+    this._count = 0;
 
     // Reduce HP if hit by player's bullet.
     this.addEventListener('hit', (e) => {
@@ -178,10 +179,10 @@ class Enemy extends SpriteActor {
     this.spawnActor(bullet);
   }
 
-  shootCircularBullets(num, speed) {
+  shootCircularBullets(num, speed, initialDegree) {
     const degree = 360 / num;
     for (let i = 0; i < num; i++) {
-      this.shootBullet(degree * i, speed);
+      this.shootBullet(initialDegree + degree * i, speed);
     }
   }
 
@@ -195,7 +196,8 @@ class Enemy extends SpriteActor {
     // Shoot bullets according to interval.
     this._timeCount++;
     if (this._timeCount > this._interval) {
-      this.shootCircularBullets(15, 1);
+      this._count += 10;
+      this.shootCircularBullets(10, 1, this._count);
       this._timeCount = 0;
     }
 
