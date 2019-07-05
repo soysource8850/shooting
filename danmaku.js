@@ -48,6 +48,12 @@ class Bullet extends SpriteActor {
     super(x, y, sprite, hitArea, ['playerBullet']);
 
     this.speed = 6;
+
+    this.addEventListener('hit', (e) => {
+      if (e.target.hasTag('enemy')) {
+        this.destroy();
+      }
+    });
   }
 
   update(gameInfo, input) {
