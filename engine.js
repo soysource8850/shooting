@@ -9,9 +9,10 @@ class Rectangle {
   }
 
   hitTest(other) {
-    const horizontal = (other.x < this.x + this.width) && (this.x < other.x + other.width);
-    const vertical = (other.y < this.y + this.height) && (this.y < other.y < other.height);
-
+    const horizontal = (other.x < this.x + this.width) &&
+      (this.x < other.x + other.width);
+    const vertical = (other.y < this.y + this.height) &&
+      (this.y < other.y + other.height);
     return (horizontal && vertical);
   }
 }
@@ -33,7 +34,7 @@ class AssetLoader {
     const img = new Image();
     img.src = url;
 
-    const promise = new Promise((resolve, rejedt) =>
+    const promise = new Promise((resolve, reject) =>
       img.addEventListener('load', (e) => {
         this._assets.set(name, img);
         resolve(img);
@@ -50,6 +51,8 @@ class AssetLoader {
     return this._assets.get(name);
   }
 }
+
+const assets = new AssetLoader();
 
 class EventDispatcher {
   constructor() {
@@ -71,8 +74,6 @@ class EventDispatcher {
     if (listeners != undefined) listeners.forEach((callback) => callback(event));
   }
 }
-
-const assets = new AssetLoader();
 
 class GameEvent {
   constructor(target) {
@@ -315,7 +316,7 @@ class Game {
     this._inputReceiver = new InputReceiver();
     this._prevTimestamp = 0;
 
-    console.log(`${title}が初期化されました。`)
+    console.log(`${title}が初期化されました。`);
   }
 
   changeScene(newScene) {
