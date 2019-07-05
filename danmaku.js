@@ -127,6 +127,55 @@ class Fighter extends SpriteActor {
   }
 }
 
+class SpiralBulletsSpawner extends Actor {
+  constructor(x, y, rotations) {
+    const hitArea = new Rectangle(0, 0, 0, 0);
+    super(x, y, hitArea);
+
+    this._rotations = rotations;
+    this._intaval = 1;
+    this._timeCount = 0;
+    this._angle = 0;
+    this._radius = 10;
+    this._bullets = [];
+    this._isFrozen = true;
+  }
+
+  update(gameInfo, input) {
+    // End the bullets expansion accoding to rotation.
+    const rotation = this._angle / 360;
+    if (rotation >= this._rotations) {
+      this._bullets.forEach((b) => b.isFrozen = false);
+      this.destroy();
+      return;
+    }
+
+    // Wait until elapsed interval.
+    this._timeCount++;
+    if (this._timeCount < this._intaval) {
+      return;
+    }
+    this._timeCount = 0;
+
+    // Change bullet's properties over time.
+    this._angle += 10;
+    this._radius += 1;
+    this._isFrozen = !this._isFrozen;
+
+    // Fire!
+    const rad = this._angle / 180 * Math.PI;
+    const bX = this.x + Math.cos(rad) * this._radius;
+    const bY = this.y + Math.sin(rad) * this._radius;
+    const bSpdX = Math.random() * 2 - 1;
+    const bSpdY = Math.random() * 2 - 1;
+    const isFrozen = this._isFrozen;
+    const bullet = new EnemyBullet(bX, bY, bSpdX, bSpdY, isFrozen);
+    this._bullets.push(bullet);
+
+    this.spawnActor(bullet);
+  }
+}
+
 class EnemyBullet extends SpriteActor {
   constructor(x, y, velocityX, velocityY, isFrozen = false) {
     const sprite = new Sprite(assets.get('sprite'), new Rectangle(16, 16, 16, 16));
