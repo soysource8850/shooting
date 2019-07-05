@@ -205,6 +205,22 @@ class Enemy extends SpriteActor {
   }
 }
 
+class DanmakuStgEndScene extends Scene {
+  constructor(renderingTarget) {
+    super('クリア', 'black', renderingTarget);
+    const text = new TextLabel(60, 200, 'ゲームクリア！');
+    this.add(text);
+  }
+}
+
+class DanmakuStgGameOverScene extends Scene {
+  constructor(renderingTarget) {
+    super('ゲームオーバー', 'black', renderingTarget);
+    const text = new TextLabel(50, 200, 'ゲームオーバー...');
+    this.add(text);
+  }
+}
+
 class DanmakuStgMainScene extends Scene {
   constructor(renderingTarget) {
     super('メイン', 'black', renderingTarget);
@@ -214,13 +230,25 @@ class DanmakuStgMainScene extends Scene {
     this.add(fighter);
     this.add(enemy);
     this.add(hpBar);
+
+    // Change scene to GameOver if a fighter is destroyed.
+    fighter.addEventListener('destroy', (e) => {
+      const scene = new DanmakuStgGameOverScene(this.renderingTarget);
+      this.changeScene(scene);
+    });
+
+    // Change scene to End if enemys is destroyed.
+    enemy.addEventListener('destroy', (e) => {
+      const scene = new DanmakuStgEndScene(this.renderingTarget);
+      this.changeScene(scene);
+    });
   }
 }
 
 class DanmakuStgTitleScene extends Scene {
   constructor(renderingTarget) {
     super('タイトル', 'black', renderingTarget);
-    const title = new Title(100, 200);
+    const title = new TextLabel(100, 200, '弾幕STG');
     this.add(title);
   }
 
