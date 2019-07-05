@@ -154,7 +154,36 @@ class Enemy extends SpriteActor {
     });
   }
 
+  shootBullet(degree, speed) {
+    const rad = degree / 180 * Math.PI;
+    const velocityX = Math.cos(rad) * speed;
+    const velocityY = Math.sin(rad) * speed;
+
+    const bullet = new EnemyBullet(this.x, this.y, velocityX, velocityY);
+    this.spawnActor(bullet);
+  }
+
+  shootCircularBullets(num, speed) {
+    const degree = 360 / num;
+    for (let i = 0; i < num; i++) {
+      this.shootBullet(degree * i, speed);
+    }
+  }
+
   update(gameInfo, input) {
+    // Move to horizontal.
+    this.x += this._velocityX;
+    if (this.x <= 100 || this.x >= 200) {
+      this._velocityX *= -1;
+    }
+
+    // Shoot bullets according to interval.
+    this._timeCount++;
+    if (this._timeCount > this._interval) {
+      this.shootCircularBullets(15, 1);
+      this._timeCount = 0;
+    }
+
     if (this.currentHp <= 0) {
       this.destroy();
     }
