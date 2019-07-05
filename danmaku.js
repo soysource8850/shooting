@@ -68,6 +68,7 @@ class Fighter extends SpriteActor {
     const boundHeight = gameInfo.screenRectangle.height - this.height;
     const bound = new Rectangle(this.width, this.height, boundWidth, boundHeight);
 
+    // todo: Do not get caught on the wall.
     if (this.isOutOfBounds(bound)) {
       this.x -= this._velocityX;
       this.y -= this._velocityY;
@@ -79,6 +80,30 @@ class Fighter extends SpriteActor {
       const bullet = new Bullet(this.x, this.y);
       this.spawnActor(bullet);
       this._timeCount = 0;
+    }
+  }
+}
+
+class Enemy extends SpriteActor {
+  constructor(x, y) {
+    const sprite = new Sprite(assets.get('sprite'), new Rectangle(16, 0, 16, 16));
+    const hitArea = new Rectangle(0, 0, 16, 16);
+    super(x, y, sprite, hitArea, ['enemy']);
+
+    this.maxHp = 50;
+    this.currentHp = this.maxHp;
+
+    this.addEventListener('hit', (e) => {
+      if (e.target.hasTag('playerBullet')) {
+        this.currentHp--;
+        this.dispatchEvent('changehp', new GameEvent(this));
+      }
+    });
+  }
+
+  update(gameInfo, input) {
+    if (this.currentHp <= 0) {
+      this.destroy();
     }
   }
 }
