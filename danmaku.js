@@ -27,7 +27,7 @@ class EnemyHpBar extends Actor {
     enemy.addEventListener('changehp', (e) => {
       const maxHp = e.target.maxHp;
       const hp = e.target.currentHp;
-      this._innerWidth = this._Width * (hp / maxHp);
+      this._innerWidth = this._width * (hp / maxHp);
     });
   }
 
