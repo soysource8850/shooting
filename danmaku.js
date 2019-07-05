@@ -128,18 +128,21 @@ class Fighter extends SpriteActor {
 }
 
 class EnemyBullet extends SpriteActor {
-  constructor(x, y, velocityX, velocityY) {
+  constructor(x, y, velocityX, velocityY, isFrozen = false) {
     const sprite = new Sprite(assets.get('sprite'), new Rectangle(16, 16, 16, 16));
     const hitArea = new Rectangle(4, 4, 8, 8);
     super(x, y, sprite, hitArea, ['enemyBullet']);
 
     this.velocityX = velocityX;
     this.velocityY = velocityY;
+    this.isFrozen = isFrozen;
   }
 
   update(gameInfo, input) {
-    this.x += this.velocityX;
-    this.y += this.velocityY;
+    if (!this.isFrozen) {
+      this.x += this.velocityX;
+      this.y += this.velocityY;
+    }
 
     if (this.isOutOfBounds(gameInfo.screenRectangle)) {
       this.destroy();
