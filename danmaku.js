@@ -146,6 +146,11 @@ class Enemy extends SpriteActor {
     this.maxHp = 50;
     this.currentHp = this.maxHp;
 
+    this._interval = 120;
+    this._timeCount = 0;
+    this._velocityX = 0.3;
+
+    // Reduce HP if hit by player's bullet.
     this.addEventListener('hit', (e) => {
       if (e.target.hasTag('playerBullet')) {
         this.currentHp--;
