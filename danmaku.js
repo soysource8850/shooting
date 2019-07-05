@@ -199,6 +199,42 @@ class EnemyBullet extends SpriteActor {
   }
 }
 
+class FireworksBullet extends EnemyBullet {
+  constructor(x, y, velocityX, velocityY, explosionTime) {
+    super(x, y, velocityX, velocityY);
+
+    this._eplasedTime = 0;
+    this.explosionTime = explosionTime;
+  }
+
+  shootBullet(degree, speed) {
+    const rad = degree / 180 * Math.PI;
+    const velocityX = Math.cos(rad) * speed;
+    const velocityY = Math.sin(rad) * speed;
+
+    const bullet = new EnemyBullet(this.x, this.y, velocityX, velocityY);
+    this.spawnActor(bullet);
+  }
+
+  shootCircularBullets(num, speed) {
+    const degree = 360 / num;
+    for (let i = 0; i < num; i++) {
+      this.shootBullet(degree * i, speed);
+    }
+  }
+
+  update(gameInfo, input) {
+    super.update(gameInfo, input);
+
+    this._eplasedTime++;
+
+    if (this._eplasedTime > this.explosionTime) {
+      this.shootCircularBullets(12, 2);
+      this.destroy();
+    }
+  }
+}
+
 class Enemy extends SpriteActor {
   constructor(x, y) {
     const sprite = new Sprite(assets.get('sprite'), new Rectangle(16, 0, 16, 16));
