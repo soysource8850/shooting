@@ -75,38 +75,46 @@ class Fighter extends SpriteActor {
     this._speed = 3;
     this._velocityX = 0;
     this._velocityY = 0;
+
+    this.addEventListener('hit', (e) => {
+      if (e.target.hasTag('enemyBullet')) {
+        this.destroy();
+      }
+    });
   }
 
   update(gameInfo, input) {
+    // Move according to the pressed key.
     this._velocityX = 0;
     this._velocityY = 0;
 
     if (input.getKey('ArrowUp')) {
-      this._velocityY -= this._speed;
+      this._velocityY = -this._speed;
     }
     if (input.getKey('ArrowDown')) {
-      this._velocityY += this._speed;
+      this._velocityY = this._speed;
     }
     if (input.getKey('ArrowRight')) {
-      this._velocityX += this._speed;
+      this._velocityX = this._speed;
     }
     if (input.getKey('ArrowLeft')) {
-      this._velocityX -= this._speed;
+      this._velocityX = -this._speed;
     }
 
     this.x += this._velocityX;
     this.y += this._velocityY;
 
+    // Prevent movement outside the screen.
     const boundWidth = gameInfo.screenRectangle.width - this.width;
     const boundHeight = gameInfo.screenRectangle.height - this.height;
     const bound = new Rectangle(this.width, this.height, boundWidth, boundHeight);
-
     // todo: Do not get caught on the wall.
     if (this.isOutOfBounds(bound)) {
       this.x -= this._velocityX;
       this.y -= this._velocityY;
     }
 
+    // Shoot bullet when the space key is pressed.
     this._timeCount++;
     const isFireReady = this._timeCount > this._interval;
     if (isFireReady && input.getKey(' ')) {
