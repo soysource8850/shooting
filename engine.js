@@ -157,6 +157,22 @@ class SpriteActor extends Actor {
 
     return (horizontal || vertical);
   }
+
+  isOutOfBoundsX(boundRect) {
+    const actorLeft = this.x;
+    const actorRight = this.x + this.width;
+    const horizontal = (actorRight < boundRect.x || actorLeft > boundRect.width);
+
+    return horizontal;
+  }
+
+  isOutOfBoundsY(boundRect) {
+    const actorTop = this.y;
+    const actorBottom = this.y + this.height;
+    const vertical = (actorBottom < boundRect.y || actorTop > boundRect.height);
+
+    return vertical;
+  }
 }
 
 class Input {
