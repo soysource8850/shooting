@@ -9,9 +9,14 @@ class Fighter extends SpriteActor {
     const hitArea = new Rectangle(20, 20, 2, 2);
     super(x, y, sprite, hitArea);
 
-    this._interval = 5;
+    this._interval = 6;
     this._timeCount = 0;
-    this._speed = 3;
+
+    this._force = 0;
+    this._friction = 0.4;
+    this._acceleration = 0;
+    this._resistance = 0.9;
+
     this._velocityX = 0;
     this._velocityY = 0;
 
@@ -24,26 +29,37 @@ class Fighter extends SpriteActor {
 
   update(gameInfo, input) {
     // Move according to the pressed key.
-    this._velocityX = 0;
-    this._velocityY = 0;
-    this._delayRate = 0.5;
+    this._velocityX = this._velocityX * this._resistance;
+    this._velocityY = this._velocityY * this._resistance;
+
+    if (
+      input.getKey("ArrowUp") ||
+      input.getKey("ArrowDown") ||
+      input.getKey("ArrowRight") ||
+      input.getKey("ArrowLeft")
+    ) {
+      if (input.getKey("z")) {
+        this._force = 1;
+      } else {
+        this._force = 2;
+      }
+    } else {
+      this._force = 0;
+    }
+
+    this._acceleration = this._force - this._friction * Math.hypot(this._velocityX, this._velocityY);
 
     if (input.getKey("ArrowUp")) {
-      this._velocityY = -this._speed;
+      this._velocityY -= this._acceleration;
     }
     if (input.getKey("ArrowDown")) {
-      this._velocityY = this._speed;
+      this._velocityY += this._acceleration;
     }
     if (input.getKey("ArrowRight")) {
-      this._velocityX = this._speed;
+      this._velocityX += this._acceleration;
     }
     if (input.getKey("ArrowLeft")) {
-      this._velocityX = -this._speed;
-    }
-
-    if (input.getKey("z")) {
-      this._velocityX = this._velocityX * this._delayRate;
-      this._velocityY = this._velocityY * this._delayRate;
+      this._velocityX -= this._acceleration;
     }
 
     this.x += this._velocityX;
@@ -69,7 +85,7 @@ class Fighter extends SpriteActor {
       this.y -= this._velocityY;
     }
 
-    // Shoot bullet when the space key is pressed.
+    // Shoot bullet when the x key is pressed.
     this._timeCount++;
     const isFireReady = this._timeCount > this._interval;
     if (isFireReady && input.getKey("x")) {

@@ -6,7 +6,7 @@ class FighterBullet extends SpriteActor {
     const hitArea = new Rectangle(18, 4, 4, 32);
     super(x, y, sprite, hitArea, ['fighterBullet']);
 
-    this.speed = 6;
+    this.speed = 8;
 
     this.addEventListener('hit', (e) => {
       if (e.target.hasTag('enemy')) {
