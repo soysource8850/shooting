@@ -46,8 +46,10 @@ class EnemyHpBar extends Actor {
 class DanmakuStgEndScene extends Scene {
   constructor(renderingTarget) {
     super('クリア', 'black', renderingTarget);
-    const text = new TextLabel(80, 200, '何かもリリース');
+    const text = new TextLabel(160, 320, 'God is dead.');
+    const back = new TextLabel(120, 520, 'Space : Back to title');
     this.add(text);
+    this.add(back);
   }
 
   update(gameInfo, input) {
@@ -62,8 +64,10 @@ class DanmakuStgEndScene extends Scene {
 class DanmakuStgGameOverScene extends Scene {
   constructor(renderingTarget) {
     super('ゲームオーバー', 'black', renderingTarget);
-    const text = new TextLabel(40, 320, '神は言っている...ここで死ぬ定めではないと...');
+    const text = new TextLabel(160, 320, 'Failed...');
+    const back = new TextLabel(120, 520, 'Space : Back to title');
     this.add(text);
+    this.add(back);
   }
 
   update(gameInfo, input) {
@@ -78,12 +82,12 @@ class DanmakuStgGameOverScene extends Scene {
 class DanmakuStgMainScene extends Scene {
   constructor(renderingTarget) {
     super('メイン', 'black', renderingTarget);
+    const enemy = new Enemy(120, 40);
+    const hpBar = new EnemyHpBar(60, 20, enemy);
     const fighter = new Fighter(240, 480);
-    const enemy = new Enemy(120, 120);
-    const hpBar = new EnemyHpBar(50, 20, enemy);
-    this.add(fighter);
     this.add(enemy);
     this.add(hpBar);
+    this.add(fighter);
 
     // Change scene to GameOver if a fighter is destroyed.
     fighter.addEventListener('destroy', (e) => {
@@ -102,13 +106,23 @@ class DanmakuStgMainScene extends Scene {
 class DanmakuStgTitleScene extends Scene {
   constructor(renderingTarget) {
     super('タイトル', 'black', renderingTarget);
-    const title = new TextLabel(80, 240, 'Meteorfall Development');
+    const title = new TextLabel(80, 200, 'Project Meteorfall');
+    const subtitle = new TextLabel(240, 240, '- Developers -');
+    const zkey = new TextLabel(180, 400, 'Z : Slow');
+    const xkey = new TextLabel(180, 440, 'X : Shot');
+    const start = new TextLabel(160, 520, 'Press X key');
+
+
     this.add(title);
+    this.add(subtitle);
+    this.add(zkey);
+    this.add(xkey);
+    this.add(start);
   }
 
   update(gameInfo, input) {
     super.update(gameInfo, input);
-    if (input.getKeyDown(' ')) {
+    if (input.getKeyDown('x')) {
       const mainScene = new DanmakuStgMainScene(this.renderingTarget);
       this.changeScene(mainScene);
     }
@@ -117,14 +131,14 @@ class DanmakuStgTitleScene extends Scene {
 
 class DanmakuStgGame extends Game {
   constructor() {
-    super('弾幕STG', 480, 640, 60);
+    super('弾幕STG', GAME_VIEW_WIDTH, GAME_VIEW_HIGHT, MAXFPS);
     const titleScene = new DanmakuStgTitleScene(this.screenCanvas);
     this.changeScene(titleScene);
   }
 }
 
-assets.addImage('sprite', 'spritesheet.png');
 assets.addImage('internet_god', 'internet_god.png');
+assets.addImage('sprite', 'spritesheet.png');
 assets.loadAll().then((a) => {
   const game = new DanmakuStgGame();
   document.body.appendChild(game.screenCanvas);

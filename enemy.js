@@ -6,10 +6,10 @@ class Enemy extends SpriteActor {
       assets.get("internet_god"),
       new Rectangle(0, 0, 240, 240)
     );
-    const hitArea = new Rectangle(40, 40, 160, 160);
+    const hitArea = new Rectangle(80, 40, 80, 80);
     super(x, y, sprite, hitArea, ["enemy"]);
 
-    this.maxHp = 100;
+    this.maxHp = 600;
     this.currentHp = this.maxHp;
 
     this._interval = 30;
