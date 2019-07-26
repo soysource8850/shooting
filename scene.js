@@ -50,6 +50,10 @@ class DanmakuStgEndScene extends Scene {
     const back = new TextLabel(120, 520, 'Space : Back to title');
     this.add(text);
     this.add(back);
+
+    var audio = document.getElementById('audio');
+    audio.pause();
+    audio.currentTime = 0;
   }
 
   update(gameInfo, input) {
@@ -68,6 +72,10 @@ class DanmakuStgGameOverScene extends Scene {
     const back = new TextLabel(120, 520, 'Space : Back to title');
     this.add(text);
     this.add(back);
+
+    var audio = document.getElementById('audio');
+    audio.pause();
+    audio.currentTime = 0;
   }
 
   update(gameInfo, input) {
@@ -88,6 +96,9 @@ class DanmakuStgMainScene extends Scene {
     this.add(enemy);
     this.add(hpBar);
     this.add(fighter);
+
+    var audio = document.getElementById('audio');
+    audio.play();
 
     // Change scene to GameOver if a fighter is destroyed.
     fighter.addEventListener('destroy', (e) => {

@@ -77,6 +77,8 @@ class Enemy extends SpriteActor {
         explosionTime
       );
       this.shootBullet(60, 3);
+      this.shootBullet(75, 2);
+      this.shootBullet(105, 2);
       this.shootBullet(120, 3);
       this.spawnActor(bullet);
       this._timeCount = 0;
