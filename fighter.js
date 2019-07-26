@@ -89,8 +89,12 @@ class Fighter extends SpriteActor {
     this._timeCount++;
     const isFireReady = this._timeCount > this._interval;
     if (isFireReady && input.getKey("x")) {
-      const bullet = new FighterBullet(this.x, this.y);
-      this.spawnActor(bullet);
+      const bullet1 = new FighterBullet(this.x, this.y, 0);
+      this.spawnActor(bullet1);
+      const bullet2 = new FighterBullet(this.x, this.y, -1);
+      this.spawnActor(bullet2);
+      const bullet3 = new FighterBullet(this.x, this.y, 1);
+      this.spawnActor(bullet3);
       this._timeCount = 0;
     }
   }

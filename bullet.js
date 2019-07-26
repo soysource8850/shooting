@@ -1,12 +1,13 @@
 'use strict';
 
 class FighterBullet extends SpriteActor {
-  constructor(x, y) {
+  constructor(x, y, side) {
     const sprite = new Sprite(assets.get('sprite'), new Rectangle(SPRITE_CELL_SIZE * 1, SPRITE_CELL_SIZE * 0, 40, 40));
     const hitArea = new Rectangle(18, 4, 4, 32);
     super(x, y, sprite, hitArea, ['fighterBullet']);
 
     this.speed = 8;
+    this.side = side;
 
     this.addEventListener('hit', (e) => {
       if (e.target.hasTag('enemy')) {
@@ -16,6 +17,7 @@ class FighterBullet extends SpriteActor {
   }
 
   update(gameInfo, input) {
+    this.x -= this.side;
     this.y -= this.speed;
     if (this.isOutOfBounds(gameInfo.screenRectangle)) {
       this.destroy();
@@ -51,6 +53,7 @@ class FireworksBullet extends EnemyBullet {
     super(x, y, velocityX, velocityY);
 
     this._eplasedTime = 0;
+    this.hash = 0;
     this.explosionTime = explosionTime;
   }
 
@@ -64,9 +67,9 @@ class FireworksBullet extends EnemyBullet {
   }
 
   shootCircularBullets(num, speed) {
-    const degree = 360 / num;
+    const degree = 360 / num
     for (let i = 0; i < num; i++) {
-      this.shootBullet(degree * i, speed);
+      this.shootBullet(degree * (i + Math.sin(degree / 180 * Math.PI) / 2), speed);
     }
   }
 
@@ -74,9 +77,13 @@ class FireworksBullet extends EnemyBullet {
     super.update(gameInfo, input);
 
     this._eplasedTime++;
+    this.hash = this.hash;
 
+    if (this._eplasedTime == this.explosionTime - 2) {
+      this.shootCircularBullets(10, 5);
+    }
     if (this._eplasedTime > this.explosionTime) {
-      this.shootCircularBullets(12, 2);
+      this.shootCircularBullets(12, 3);
       this.destroy();
     }
   }
